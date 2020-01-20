@@ -8,6 +8,12 @@
     "sass-loader": "^7.0.1",
     "webpack-notifier": "^1.6.0"
   },
+  "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "postinstall": "encore production --progress" // executed during deployment to Heroku
+    },
   "dependencies": {
     "jquery": "^3.4.1",
     "node-html-parser": "^1.1.16"
