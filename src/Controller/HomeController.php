@@ -41,7 +41,7 @@ class HomeController extends AbstractController
 		} else {
     		$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
 		}
-
+ss
     	$regex = "/Le terme \'.*\' n\'existe pas/";
     	preg_match($regex, $contenu, $exist, PREG_OFFSET_CAPTURE);
 
