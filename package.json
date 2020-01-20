@@ -9,10 +9,7 @@
     "webpack-notifier": "^1.6.0"
   },
   "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "postinstall": "encore production --progress" // executed during deployment to Heroku
+         "build": "encore prod"
     },
   "dependencies": {
     "jquery": "^3.4.1",
