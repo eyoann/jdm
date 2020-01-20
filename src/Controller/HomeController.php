@@ -11,7 +11,7 @@ use MongoDB\Client;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="index")
      */
     public function index()
     {
