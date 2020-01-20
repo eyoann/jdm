@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Diko - {{ q|capitalize }} {% endblock %}
+
 {% block body %}
 	<a class="btn" href="{{ path('index') }}" role="button">
 		<img src="{{ asset('build/images/little-logo.png') }}"  class="img-fluid rounded mx-auto d-block" alt="logo">
