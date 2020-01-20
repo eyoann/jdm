@@ -15,9 +15,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('home/index.html.twig');
     }
 
     /**
@@ -30,8 +28,7 @@ class HomeController extends AbstractController
 		$dico = $client->mydb->dico;
 
     	//REQUEST
-    	$search = $request->query->get('q');
-    	$search = str_replace(" ", "+", $search);
+    	$search = rawurlencode(mb_convert_encoding($request->query->get('q'),"Windows-1252"));
 
     	if ($this->get_http_response_code("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=") != "200") {
     		$this->addFlash(
