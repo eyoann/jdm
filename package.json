@@ -9,7 +9,7 @@
     "webpack-notifier": "^1.6.0"
   },
   "scripts": {
-         "build": "encore prod"
+    "build": "encore prod"
     },
   "dependencies": {
     "jquery": "^3.4.1",
