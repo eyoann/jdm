@@ -37,7 +37,7 @@ class HomeController extends AbstractController
                     'warning',
                     "Le serveur de JDM ne répond pas"
                 );
-    		return $this->redirectToRoute('home');
+    		return $this->redirectToRoute('index');
 		} else {
     		$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
 		}
@@ -52,7 +52,7 @@ class HomeController extends AbstractController
                     'warning',
                     "Ce mot n'existe pas"
                 );
-    		return $this->redirectToRoute('home');
+    		return $this->redirectToRoute('index');
     	}
 
     	//Recuperer la rechercher
