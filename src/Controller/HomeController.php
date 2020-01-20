@@ -28,7 +28,9 @@ class HomeController extends AbstractController
 		$dico = $client->mydb->dico;
 
     	//REQUEST
-    	$search = rawurlencode(mb_convert_encoding($request->query->get('q'),"Windows-1252"));
+		$search = rawurlencode(mb_convert_encoding($request->query->get('q'),"Windows-1252"));
+
+		$search = str_replace("%2B", "+", $search);
 
     	if ($this->get_http_response_code("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=") != "200") {
     		$this->addFlash(
