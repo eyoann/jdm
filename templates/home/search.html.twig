@@ -65,9 +65,20 @@
 					{% if array|length > 0 %}
 						<div class="col-sm">
 							<h2 class="inline">{% if loop.first %}<i class="fas fa-arrow-right fa-xs text-success">({{  array|length }})</i>{% else %}<i class="fas fa-arrow-left fa-xs text-danger">({{  array|length }})</i>{% endif %}{{ title|capitalize }}{% if array|length > 20 %}<button class="text-warning plus btn btn-link"><i class="fas fa-plus-circle fa-lg"></i></button>{% endif %}</h2>
+							{#
 							{% for item in array|reverse %}
 								<div class="{% if loop.index > 20 %}removable{% else %}d-inline-block{% endif %}"><a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> ></div>
 							{% endfor %}
+							#}
+
+							{% for item in array|reverse|slice(0,20) %}
+								<div class="d-inline-block"><a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> ></div>
+							{% endfor %}
+							<div class="removable">
+								{% for item in array|reverse|slice(20,array|length) %}
+									<div class="d-inline-block"><a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> > </div>
+								{% endfor %}
+							</div>
 						</div>
 					{% endif %}
 			{% endfor %}

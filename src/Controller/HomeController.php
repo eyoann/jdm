@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+
 use MongoDB\Client;
 
 class HomeController extends AbstractController
@@ -24,8 +25,8 @@ class HomeController extends AbstractController
     public function search(Request $request)
     {
 
-    	$client = new Client("mongodb://localhost:27017");
-		$dico = $client->mydb->dico;
+		//$client = new Client("mongodb://localhost:27017");
+		//$dico = $client->mydb->dico;
 
     	//REQUEST
 		$search = rawurlencode(mb_convert_encoding($request->query->get('q'),"Windows-1252"));
@@ -67,7 +68,7 @@ class HomeController extends AbstractController
 		$id = $id['id'][0];
 
     	//RECUPERER LES DEFINITIONS
-    	preg_match("/<def>(.*)<\/def>/s", $contenu, $defs, PREG_OFFSET_CAPTURE);
+    	preg_match("/<def>(.*)<\/def>/s", substr($contenu, 0, 10000), $defs, PREG_OFFSET_CAPTURE);
 
     	if($defs) {
 	    	$s = utf8_encode(strip_tags($defs[0][0]));
@@ -81,19 +82,23 @@ class HomeController extends AbstractController
 
 			preg_match_all($regex, $s, $matches, PREG_SET_ORDER);
 
-			foreach ($matches as $match) {
+			if (count($matches) > 0) {
+				foreach ($matches as $match) {
 
-				if ($match[1] && $definition) {
-					$defs[$i] = $definition;
-					$i++;
-					$definition = "";
+					if ($match[1] && $definition) {
+						$defs[$i] = $definition;
+						$i++;
+						$definition = "";
+					}
+
+					$definition .= $match[2];
 				}
 
-				$definition .= $match[2];
-			}
-
-			if ($definition) {
-				$defs[$i] = $definition;
+				if ($definition) {
+					$defs[$i] = $definition;
+				}
+			} else {
+				$defs[$i] = $s;
 			}
 		}
 
@@ -296,7 +301,7 @@ class HomeController extends AbstractController
 			$listCheckBox [] = array_slice($forlist, $i, 4);
 		}
 
-    	return $this->render('home/search.html.twig',
+		$response = $this->render('home/search.html.twig',
     		['q' => $search,
     		 'defs' => $defs,
     		 'assos' => $forArray,
@@ -305,6 +310,14 @@ class HomeController extends AbstractController
     		 'iL' => $iL,
     		 'listCheckBox' => $listCheckBox,
     		 ]);
+
+    	// cache for 3600 seconds
+		$response->setSharedMaxAge(3600);
+
+    	// (optional) set a custom Cache-Control directive
+		$response->headers->addCacheControlDirective('must-revalidate', true);
+
+    	return $response;
     }
 
     public function createArrayID($regex, $contenu) {
