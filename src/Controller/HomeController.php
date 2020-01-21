@@ -312,7 +312,7 @@ class HomeController extends AbstractController
     		 ]);
 
     	// cache for 3600 seconds
-		$response->setSharedMaxAge(3600);
+		$response->setSharedMaxAge(604800);
 
     	// (optional) set a custom Cache-Control directive
 		$response->headers->addCacheControlDirective('must-revalidate', true);
