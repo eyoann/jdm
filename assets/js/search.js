@@ -15,6 +15,33 @@ $(document).ready(function() {
         }
     });
 
+    $(".scroller").click(function() {
+        $scrollTo = $('#asso-'+ $(this).attr("data-id"));
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $scrollTo.offset().top
+        }, 1000);
+    });
+
+    $(document).scroll(function() {
+
+      if ($(this).scrollTop() >= 20) {
+
+
+        $('#return-to-top').fadeIn(200);
+      } else {
+
+
+        $('#return-to-top').fadeOut(200);
+      }
+
+    });
+
+    $('#return-to-top').click(function() {
+      $('body,html').animate({
+        scrollTop: 0
+      }, 500, 'swing');
+    });
+
     $(":button").click(function(){
         var kids = $(this).parent().parent().children('.removable');
         if($(this).hasClass('plus')) {

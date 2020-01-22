@@ -7,3 +7,23 @@ body {
 .removable {
 	display: none;
 }
+
+#return-to-top {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  background-color: bg-info;
+  color: bg-info;
+  cursor: pointer;
+}
+
+
+#return-to-top:hover {
+  background-color: bg-primary;
+  opacity: 1;
+  filter: "alpha(opacity=100)";
+  -ms-filter: "alpha(opacity=100)";
+}
