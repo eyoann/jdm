@@ -2,12 +2,16 @@ const $ = require('jquery');
 
 $(document).ready(function() {
 
-    $(":checkbox").click(function(){
+    $('#checkall').click(function() {
+        $("input:checkbox").prop('checked', $(this).prop("checked")).trigger('change');
+    });
+
+    $(':checkbox').change(function() {
         var id = $(this).attr('id');
-        if($(this).prop("checked") == false){
-            $('#asso-' + id).hide();
-        } else {
+        if($(this).is(":checked")) {
             $('#asso-' + id).show();
+        } else {
+            $('#asso-' + id).hide();
         }
     });
 
