@@ -10,8 +10,9 @@
   },
   "scripts": {
     "build": "yarn encore prod"
-    },
+  },
   "dependencies": {
+    "core-js": "^3.6.4",
     "jquery": "^3.4.1",
     "node-html-parser": "^1.1.16"
   }

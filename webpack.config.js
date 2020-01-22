@@ -25,7 +25,8 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('search', './assets/js/search.js')
-    //.addEntry('page2', './assets/js/page2.js')
+    .addEntry('suggestion', './assets/js/suggestion.js')
+    //.addEntry('typeahead', './assets/js/typeahead.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

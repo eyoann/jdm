@@ -4,11 +4,9 @@
     <img src="{{ asset('build/images/logo.png') }}"  class="img-fluid rounded mx-auto d-block" alt="logo">
 
 	<form class="form-inline md-form mr-auto mb-4 d-flex justify-content-center center-block active-cyan-3 active-cyan-4 " action="{{ path('search') }}">
-        <input class="form-control mr-sm-2" type="search" name="q">
+        <input class="form-control mr-sm-2 typeahead" type="search" name="q" data-suggest-url="{{ path('suggestion_search') }}" required autocomplete="off">
         <button class="btn btn-outline-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-search-plus fa-lg"></i></button>
     </form>
-
-
 
     {% for label, messages in app.flashes(['success', 'warning']) %}
 	    {% for message in messages %}
@@ -18,4 +16,8 @@
 	    {% endfor %}
 	{% endfor %}
 
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('suggestion') }}
 {% endblock %}

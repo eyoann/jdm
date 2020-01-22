@@ -5,9 +5,10 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use MongoDB\Client;
+use MongoDB\BSON\Regex;
 
 class HomeController extends AbstractController
 {
@@ -20,13 +21,28 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/suggestion", name="suggestion_search")
+     */
+    public function suggestion(Request $request)
+    {
+		$client = new Client("mongodb://localhost:27017");
+		$dico = $client->mydb->dico;
+		$q = $request->query->get('q');
+		$regex = new Regex ('^'.$q);
+		$cursor = $dico->find(array('terme'=> $regex), ['limit' => 8]);
+		$result = array();
+		foreach ($cursor as $doc) {
+			$result [] = $doc['terme'];
+		}
+
+        return new JsonResponse($result);
+    }
+
+    /**
      * @Route("/search", name="search")
      */
     public function search(Request $request)
     {
-
-		//$client = new Client("mongodb://localhost:27017");
-		//$dico = $client->mydb->dico;
 
     	//REQUEST
 		$search = rawurlencode(mb_convert_encoding($request->query->get('q'),"Windows-1252"));
