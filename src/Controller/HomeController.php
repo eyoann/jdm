@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(Request $request)
     {
         return $this->render('home/index.html.twig');
     }
@@ -25,8 +25,8 @@ class HomeController extends AbstractController
      */
     public function suggestion(Request $request)
     {
-		$client = new Client("mongodb://localhost:27017");
-		$dico = $client->mydb->dico;
+		$client = new Client($this->getParameter('mongodb_server'));
+		$dico = $client->heroku_3s3x0gg8->diko;
 		$q = $request->query->get('q');
 		$regex = new Regex ('^'.$q);
 		$cursor = $dico->find(array('terme'=> $regex), ['limit' => 8]);
