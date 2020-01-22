@@ -49,9 +49,8 @@ class HomeController extends AbstractController
 
 		$search = str_replace("%2B", "+", $search);
 
-		try {
-			$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
-		} catch (Exception $e) {
+		$contenu = file_get_contents("http://www.jeuxd:emots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
+		if ($contenu == false) {
 			$this->addFlash(
                     'warning',
                     "Le serveur de JDM ne répond pas"
