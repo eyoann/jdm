@@ -16,6 +16,23 @@
 	    {% endfor %}
 	{% endfor %}
 
+	<div class="container justify-content-center text-center border border-dark bg-info">
+		<fieldset class="form-group border p-2">
+			<legend class="w-auto">50 mots les plus fréquents <button class="text-warning plus btn btn-link remove"><i class="fas fa-plus-circle fa-lg"></i></button></legend>
+			{% set inc = 1 %}
+			{% for mots in listMots %}
+				<div class ="row">
+					{% for mot in mots %}
+						<div class="col-sm-3 {% if inc > 20 %} removable {% endif %}">
+							<a href="{{ path('search', {'q': mot.terme}) }}" class="text-dark">{{ mot.terme }}</a>
+						</div>
+						{% set inc = inc + 1 %}
+					{% endfor %}
+				</div>
+			{% endfor %}
+		</fieldset>
+	</div>
+
 {% endblock %}
 
 {% block javascripts %}

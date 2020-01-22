@@ -17,7 +17,16 @@ class HomeController extends AbstractController
      */
     public function index(Request $request)
     {
-        return $this->render('home/index.html.twig');
+    	$contenu = file_get_contents("http://www.jeuxdemots.org/JDM-LEXICALNET-FR/JEUXDEMOTS-README.txt");
+
+    	preg_match_all("/\/\/ n=\"(?P<terme>.*)\"/", utf8_encode($contenu), $mots, PREG_SET_ORDER);
+
+
+    	for ($i=0; $i < count($mots); $i+=4) {
+			$listMots [] = array_slice($mots, $i, 4);
+		}
+
+        return $this->render('home/index.html.twig', ['listMots' => $listMots]);
     }
 
     /**
