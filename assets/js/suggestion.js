@@ -10,6 +10,9 @@ $(document).ready(function() {
       name: 'product',
       limit: 8,
       minLength: 3,
+      fitToElement: true,
+      //autoSelect: false,
+      selectOnBlur : false,
       source: function (q, sync, async) {
           $.ajax( { url : $('.typeahead').attr("data-suggest-url"),
                     method: "get",
