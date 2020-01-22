@@ -33,14 +33,14 @@ class HomeController extends AbstractController
 
 		$search = str_replace("%2B", "+", $search);
 
-    	if ($this->get_http_response_code("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=") != "200") {
-    		$this->addFlash(
+		try {
+			$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
+		} catch (Exception $e) {
+			$this->addFlash(
                     'warning',
                     "Le serveur de JDM ne répond pas"
                 );
     		return $this->redirectToRoute('index');
-		} else {
-    		$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
 		}
 
     	$regex = "/Le terme \'.*\' n\'existe pas/";
@@ -297,6 +297,50 @@ class HomeController extends AbstractController
 			unset($forlist['18']);
 		}
 
+		if (array_key_exists('Raffinement sémantique', $forArray) && count($defs) == 0) {
+			$defSeman = end($forArray['Raffinement sémantique']['out'])['terme'];
+
+			$semantique = rawurlencode(mb_convert_encoding($defSeman, "Windows-1252"));
+
+			$semantique = str_replace("%2B", "+", $semantique);
+
+			$contSeman = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$semantique&rel=");
+
+			//RECUPERER LES DEFINITIONS
+			preg_match("/<def>(.*)<\/def>/s", substr($contSeman, 0, 10000), $defSeman, PREG_OFFSET_CAPTURE);
+
+			if($defSeman) {
+				$s = utf8_encode(strip_tags($defSeman[0][0]));
+
+				$regex = "/^([0-9]+\. )?(.*)$/m";
+				$definition = "";
+
+				$i = 0;
+
+				preg_match_all($regex, $s, $matches, PREG_SET_ORDER);
+
+				if (count($matches) > 0) {
+					foreach ($matches as $match) {
+
+						if ($match[1] && $definition) {
+							$defs[$i] = $definition;
+							$i++;
+							$definition = "";
+						}
+
+						$definition .= $match[2];
+					}
+
+					if ($definition) {
+						$defs[$i] = $definition;
+					}
+				} else {
+					$defs[$i] = $s;
+				}
+				$i++;
+			}
+		}
+
 		for ($i=0; $i < count($forlist); $i+=4) {
 			$listCheckBox [] = array_slice($forlist, $i, 4);
 		}
@@ -350,11 +394,5 @@ class HomeController extends AbstractController
 
 		return $relationOut;
 	}
-
-	public function get_http_response_code($url) {
-    	$headers = get_headers($url);
-    	return substr($headers[0], 9, 3);
-	}
-
 }
 
