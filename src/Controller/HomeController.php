@@ -49,7 +49,7 @@ class HomeController extends AbstractController
 
 		$search = str_replace("%2B", "+", $search);
 
-		$contenu = file_get_contents("http://www.jeuxd:emots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
+		$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
 		if ($contenu == false) {
 			$this->addFlash(
                     'warning',
