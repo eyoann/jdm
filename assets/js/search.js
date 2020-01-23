@@ -24,7 +24,7 @@ $(document).ready(function() {
 
     $(document).scroll(function() {
 
-      if ($(this).scrollTop() >= 20) {
+      if ($(this).scrollTop() >= 300) {
 
 
         $('#return-to-top').fadeIn(200);
