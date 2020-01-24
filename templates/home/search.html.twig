@@ -33,9 +33,9 @@
 			</p>
 		{% endif %}
 		{% if defs|length > 0 %}
-		   	<h2>Définition {% if defs|length > 3 %}<button class="text-warning plus btn btn-link"><i class="fas fa-plus-circle fa-lg"></i></button>{% endif %}</h2>
+		   	<h2>Définition {% if defs|length > 3 %}<button class="text-warning plus btn btn-link defs"><i class="fas fa-plus-circle fa-lg"></i></button>{% endif %}</h2>
 			{% for def in defs %}
-				<p {% if loop.index > 3 %}class="removable"{% endif %}><strong>{{ loop.index }}</strong> {{ def|capitalize }}</p>
+				<p {% if loop.index > 3 %}class="removable def"{% endif %}><strong>{{ loop.index }}</strong> {{ def|capitalize }}</p>
 			{% endfor %}
 		{% endif %}
 	</div>
@@ -63,22 +63,16 @@
 			<div class="row" id="asso-{{loop.index}}">
 			{% for array in asso %}
 					{% if array|length > 0 %}
-						<div class="col-sm">
-							<h2 class="inline">{% if loop.first %}<i class="fas fa-arrow-right fa-xs text-success">({{  array|length }})</i>{% else %}<i class="fas fa-arrow-left fa-xs text-danger">({{  array|length }})</i>{% endif %}{{ title|capitalize }}{% if array|length > 20 %}<button class="text-warning plus btn btn-link"><i class="fas fa-plus-circle fa-lg"></i></button>{% endif %}</h2>
-
-							{% for item in array|reverse %}
-								<div class="{% if loop.index > 20 %}removable{% else %}d-inline-block{% endif %}"><a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> ></div>
-							{% endfor %}
-							{#
+						<div class="col-sm d-inline-block">
+							<h2 class="inline">{% if loop.first %}<i class="fas fa-arrow-right fa-xs text-success">({{  array|length }})</i>{% else %}<i class="fas fa-arrow-left fa-xs text-danger">({{  array|length }})</i>{% endif %}{{ title|capitalize }}{% if array|length > 20 %}<button class="text-warning plus btn btn-link remove" data-id="remov-{{ loop.parent.loop.index }}-{{ loop.index }}"><i class="fas fa-plus-circle fa-lg"></i></button>{% endif %}</h2>
 							{% for item in array|reverse|slice(0,20) %}
-								<div class="d-inline-block"><a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> ></div>
+								<a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> >
 							{% endfor %}
-							<div class="removable">
+							<div class="removable" id="remov-{{ loop.parent.loop.index }}-{{ loop.index }}">
 								{% for item in array|reverse|slice(20,array|length) %}
-									<div class="d-inline-block"><a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> > </div>
+									<a href="{{ path('search', {'q': item.search}) }}">{{ item.terme }}</a> >
 								{% endfor %}
 							</div>
-							#}
 						</div>
 					{% endif %}
 			{% endfor %}

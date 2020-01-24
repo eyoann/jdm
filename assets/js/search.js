@@ -42,22 +42,32 @@ $(document).ready(function() {
       }, 500, 'swing');
     });
 
-    $(":button").click(function(){
-        var kids = $(this).parent().parent().children('.removable');
+    $(".remove").click(function(){
+        var id = $(this).attr("data-id");
         if($(this).hasClass('plus')) {
-            //console.log(kids);
-            kids.show();
+            $("#" + id).show();
             $(this).html("<i class=\"fas fa-minus-circle fa-lg\"></i>");
             $(this).removeClass("plus");
-            kids.addClass("d-inline-block");
             $(this).addClass("moins");
         } else {
-            kids.hide();
+            $("#" + id).hide();
             $(this).html("<i class=\"fas fa-plus-circle fa-lg\"></i>");
             $(this).removeClass("moins");
-            kids.removeClass("d-inline-block");
             $(this).addClass("plus");
         }
     });
 
+    $(".defs").click(function(){
+        if($(this).hasClass('plus')) {
+            $(".def").show();
+            $(this).html("<i class=\"fas fa-minus-circle fa-lg\"></i>");
+            $(this).removeClass("plus");
+            $(this).addClass("moins");
+        } else {
+            $(".def").hide();
+            $(this).html("<i class=\"fas fa-plus-circle fa-lg\"></i>");
+            $(this).removeClass("moins");
+            $(this).addClass("plus");
+        }
+    });
 });
