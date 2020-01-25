@@ -48,6 +48,55 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/definition", name="def")
+     */
+	public function definition(Request $request)
+	{
+
+		$search = $request->query->get('q');
+
+		$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
+
+		$defs = null;
+
+		//RECUPERER LES DEFINITIONS
+		preg_match("/<def>(.*)<\/def>/s", substr($contenu, 0, 10000), $defs, PREG_OFFSET_CAPTURE);
+
+		if($defs) {
+			$s = utf8_encode(strip_tags($defs[0][0]));
+
+			$regex = "/^([0-9]+\. )?(.*)$/m";
+			$definition = "";
+
+			$defs = [];
+
+			$i = 0;
+
+			preg_match_all($regex, $s, $matches, PREG_SET_ORDER);
+
+			if (count($matches) > 0) {
+				foreach ($matches as $match) {
+
+					if ($match[1] && $definition) {
+						$defs[$i] = $definition;
+						$i++;
+						$definition = "";
+					}
+
+					$definition .= $match[2];
+				}
+
+				if ($definition) {
+					$defs[$i] = $definition;
+				}
+			} else {
+				$defs[$i] = $s;
+			}
+		}
+        return $this->render('home/definition.html.twig', ['defs' => $defs]);
+    }
+
+    /**
      * @Route("/search", name="search")
      */
     public function search(Request $request)
@@ -321,47 +370,14 @@ class HomeController extends AbstractController
 			unset($forlist['18']);
 		}
 
-		if (array_key_exists('Raffinement sémantique', $forArray) && count($defs) == 0) {
-			$defSeman = end($forArray['Raffinement sémantique']['out'])['terme'];
+		$defSeman = null;
+		if (array_key_exists('Raffinement sémantique', $forArray)) {
 
-			$semantique = rawurlencode(mb_convert_encoding($defSeman, "Windows-1252"));
-
-			$semantique = str_replace("%2B", "+", $semantique);
-
-			$contSeman = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$semantique&rel=");
-
-			//RECUPERER LES DEFINITIONS
-			preg_match("/<def>(.*)<\/def>/s", substr($contSeman, 0, 10000), $defSeman, PREG_OFFSET_CAPTURE);
-
-			if($defSeman) {
-				$s = utf8_encode(strip_tags($defSeman[0][0]));
-
-				$regex = "/^([0-9]+\. )?(.*)$/m";
-				$definition = "";
-
-				$i = 0;
-
-				preg_match_all($regex, $s, $matches, PREG_SET_ORDER);
-
-				if (count($matches) > 0) {
-					foreach ($matches as $match) {
-
-						if ($match[1] && $definition) {
-							$defs[$i] = $definition;
-							$i++;
-							$definition = "";
-						}
-
-						$definition .= $match[2];
-					}
-
-					if ($definition) {
-						$defs[$i] = $definition;
-					}
-				} else {
-					$defs[$i] = $s;
-				}
-				$i++;
+			foreach ($forArray['Raffinement sémantique']['out'] as $key => $value) {
+				$def = $value['terme'];
+				$def = rawurlencode(mb_convert_encoding($def, "Windows-1252"));
+				$def = str_replace("%2B", "+", $def);
+				$defSeman [] = $def;
 			}
 		}
 
@@ -377,6 +393,7 @@ class HomeController extends AbstractController
     		 'lemme' => $lemme,
     		 'iL' => $iL,
     		 'listCheckBox' => $listCheckBox,
+			 'defSeman' => $defSeman
     		 ]);
 
     	// cache for 3600 seconds

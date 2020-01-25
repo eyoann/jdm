@@ -70,4 +70,29 @@ $(document).ready(function() {
             $(this).addClass("plus");
         }
     });
+
+    var index = 1;
+
+    $('.findDef').each(function(i, element) {
+        var url = $(this).attr('data-url');
+        var request = $.ajax({
+                method: "GET",
+                url: url,
+                beforeSend: function() { $('.loading-div').show(); },
+                complete: function() { $('.loading-div').hide(); }
+            });
+
+        request.done(function( msg ) {
+            if(msg == "") {
+                console.log("toto");
+            } else {
+                $(element).append("<p><strong>"+index+"</strong> " + msg+ "</p>");
+                index++;
+            }
+        });
+
+        request.fail(function( jqXHR, textStatus ) {
+            console.log( "Request failed: " + textStatus );
+        });
+    });
 });
