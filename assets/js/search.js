@@ -79,7 +79,18 @@ $(document).ready(function() {
                 method: "GET",
                 url: url,
                 beforeSend: function() { $('.loading-div').show(); },
-                complete: function() { $('.loading-div').hide(); }
+                complete: function() { $('.loading-div').hide();
+                    var hide = false;
+                    $('.findDef').each(function() {
+                        if($(this).text().length > 0) {
+                            hide = true;
+                            return false;
+                        }
+                    });
+
+                    if(!hide) {$(".title-sem").hide();}
+
+                }
             });
 
         request.done(function( msg ) {
