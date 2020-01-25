@@ -80,16 +80,12 @@ $(document).ready(function() {
                 url: url,
                 beforeSend: function() { $('.loading-div').show(); },
                 complete: function() { $('.loading-div').hide();
-                    var hide = false;
                     $('.findDef').each(function() {
                         if($(this).text().length > 0) {
-                            hide = true;
+                            $(".title-sem").show();
                             return false;
                         }
                     });
-
-                    if(!hide) {$(".title-sem").hide();}
-
                 }
             });
 
