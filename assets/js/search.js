@@ -58,13 +58,14 @@ $(document).ready(function() {
     });
 
     $(".defs").click(function(){
+        var id = $(this).attr("data-id");
         if($(this).hasClass('plus')) {
-            $(".def").show();
+            $("." + id).show();
             $(this).html("<i class=\"fas fa-minus-circle fa-lg\"></i>");
             $(this).removeClass("plus");
             $(this).addClass("moins");
         } else {
-            $(".def").hide();
+            $("." + id).hide();
             $(this).html("<i class=\"fas fa-plus-circle fa-lg\"></i>");
             $(this).removeClass("moins");
             $(this).addClass("plus");
