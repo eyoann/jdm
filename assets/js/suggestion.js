@@ -11,8 +11,8 @@ $(document).ready(function() {
       limit: 8,
       minLength: 3,
       fitToElement: true,
-      //autoSelect: false,
-      selectOnBlur : false,
+      autoSelect: false,
+      selectOnBlur: false,
       source: function (q, sync, async) {
           $.ajax( { url : $('.typeahead').attr("data-suggest-url"),
                     method: "get",
@@ -22,12 +22,13 @@ $(document).ready(function() {
                   }
                 );
         },
-      display: function(o) { return o; },
-      updater : function(item) {
-        this.$element[0].value = item;
-        this.$element[0].form.submit();
-        return item;
-      }
+      displayText: function(o) { return o; },
+      afterSelect: function(item) { $( "form" ).submit();}
+
+    });
+
+    $('input').blur(function() {
+      $(this).val("");
     });
 
     $(".remove").click(function(){
