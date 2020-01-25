@@ -72,8 +72,6 @@ $(document).ready(function() {
         }
     });
 
-    var index = 1;
-
     $('.findDef').each(function(i, element) {
         var url = $(this).attr('data-url');
         var request = $.ajax({
@@ -94,8 +92,7 @@ $(document).ready(function() {
             if(msg == "") {
                 console.log("toto");
             } else {
-                $(element).append("<p><strong>"+index+"</strong> " + msg+ "</p>");
-                index++;
+                $(element).append("<p><strong> - </strong> " + msg+ "</p>");
             }
         });
 
