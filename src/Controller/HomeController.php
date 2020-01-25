@@ -108,6 +108,7 @@ class HomeController extends AbstractController
 		$search = str_replace("%2B", "+", $search);
 
 		$contenu = file_get_contents("http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=$search&rel=");
+
 		if ($contenu == false) {
 			$this->addFlash(
                     'warning',
@@ -141,7 +142,7 @@ class HomeController extends AbstractController
 		$id = $id['id'][0];
 
     	//RECUPERER LES DEFINITIONS
-    	preg_match("/<def>(.*)<\/def>/s", substr($contenu, 0, 10000), $defs, PREG_OFFSET_CAPTURE);
+    	preg_match("/<def>(.*)<\/def>/s", substr($contenu, 0, 30000), $defs, PREG_OFFSET_CAPTURE);
 
     	if($defs) {
 	    	$s = utf8_encode(strip_tags($defs[0][0]));
