@@ -19,7 +19,7 @@ class HomeController extends AbstractController
     {
     	$contenu = file_get_contents("http://www.jeuxdemots.org/JDM-LEXICALNET-FR/JEUXDEMOTS-README.txt");
 
-    	preg_match_all("/\/\/ n=\"(?P<terme>.*)\"/", utf8_encode($contenu), $mots, PREG_SET_ORDER);
+    	preg_match_all("/\/\/ n=\"(?P<terme>[A-Za-z]*)\"/", utf8_encode($contenu), $mots, PREG_SET_ORDER);
 
 
     	for ($i=0; $i < count($mots); $i+=4) {
